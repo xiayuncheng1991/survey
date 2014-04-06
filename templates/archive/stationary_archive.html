@@ -1,0 +1,124 @@
+{% extends "admin/base_site.html" %}
+{% block extrastyle %}
+<link rel="stylesheet" type="text/css" href="/static/admin/css/changelists.css" />
+{% endblock %}
+{% block bodyclass %}change-list{% endblock %}
+{% block title %}
+  <p>Insert meaningful help message here...</p>
+{% endblock %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+	<a href="/admin/">Home</a> &rsaquo; <a href="/admin/archive/">Archive</a>
+	&rsaquo; Stationary archives
+</div>       
+{% endblock %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
+<form action="{% url 'archive:stationary_archive_index' %}" method="post" >
+{% csrf_token %}
+{% if stationary_archive_list %}
+	{% for stationary_archive in stationary_archive_list %}
+	{{stationary_archive.stationaryname}}
+	{% endfor %}
+{% endif %}
+<button type="submit">Archive Stationary</button>
+</form>
+
+<div id="content" class="flex">
+<h1>Select stationary type to change</h1>     
+<div id="content-main">
+	<ul class="object-tools">
+		<li>
+        	<a href="{% url 'archive:archive_stationary' %}" class="addlink">Archive Stationary Choices</a>
+        </li>
+    </ul>
+      
+<div class="module filtered" id="changelist">       
+	<div id="changelist-filter">
+	<h2>Filter</h2>   
+	<h3> By name </h3>
+	<ul id="filterbyname">
+    <li class="selected"><a href="?">All</a></li>
+    <li><a href="?name=%E6%A9%A1%E7%9A%AE">橡皮</a></li>
+    <li><a href="?name=%E8%83%B6%E6%B0%B4">胶水</a></li>
+    <li><a href="?name=%E9%92%A2%E7%AC%94">钢笔</a></li>
+    <li><a href="?name=%E9%93%85%E7%AC%94">铅笔</a></li>
+	</ul>
+</div>
+<form id="changelist-form" action="" method="post"><input type="hidden" name="csrfmiddlewaretoken" value="5woEJDTsCI6HE1OCZ1XIaWjluWcbVkRX">
+         
+<div class="actions">
+</div>
+
+<div class="results">
+<table id="result_list">
+<thead>
+<tr>
+
+<th scope="col" class="action-checkbox-column">
+   
+   <div class="text"><span><input type="checkbox" id="action-toggle" style="display: inline-block;"></span></div>
+   <div class="clear"></div>
+</th>
+<th scope="col" class="sortable column-name">
+   
+     
+   
+   <div class="text"><a href="?o=1">Name</a></div>
+   <div class="clear"></div>
+</th>
+<th scope="col" class="sortable column-details">
+   
+     
+   
+   <div class="text"><a href="?o=2">Details</a></div>
+   <div class="clear"></div>
+</th>
+<th scope="col" class="column-sum">
+   
+   <div class="text"><span>Sum</span></div>
+   <div class="clear"></div>
+</th>
+</tr>
+</thead>
+<tbody>
+
+
+<tr class="row1"><td class="action-checkbox"><input class="action-select" name="_selected_action" type="checkbox" value="4"></td><th><a href="/admin/stationary/stationarytype/4/">铅笔</a></th><td>None</td><td>0</td></tr>
+
+
+<tr class="row2"><td class="action-checkbox"><input class="action-select" name="_selected_action" type="checkbox" value="3"></td><th><a href="/admin/stationary/stationarytype/3/">钢笔</a></th><td>None</td><td>0</td></tr>
+
+
+<tr class="row1"><td class="action-checkbox"><input class="action-select" name="_selected_action" type="checkbox" value="2"></td><th><a href="/admin/stationary/stationarytype/2/">胶水</a></th><td>None</td><td>0</td></tr>
+
+
+<tr class="row2"><td class="action-checkbox"><input class="action-select" name="_selected_action" type="checkbox" value="1"></td><th><a href="/admin/stationary/stationarytype/1/">橡皮</a></th><td>None</td><td>0</td></tr>
+
+</tbody>
+</table>
+</div>
+<p class="paginator">
+
+4 stationary types
+
+
+</p>
+
+      </form>
+    </div>
+  </div>
+<br class="clear">
+</div>
+
+<script>
+$(document).ready(function(){
+	 var url="{% url 'archive:json_stationaryarchive' %}"
+	        $.getJSON(
+	        url,  
+	        function(data){
+	        	
+	        });
+});
+</script>
+{% endblock %}

@@ -24,7 +24,7 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['10.167.218.227', 'localhost']
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'account',
     'stationary',
+    'archive',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -85,6 +86,7 @@ STATIC_URL = '/static/'
 MEDIA_ROOT= os.path.join(BASE_DIR, 'media')
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, 'static'),
     ('img',os.path.join(BASE_DIR, 'media')),
     ('css',os.path.join(BASE_DIR, 'static/css')),
     ('js',os.path.join(BASE_DIR, 'static/js')),

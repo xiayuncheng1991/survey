@@ -11,7 +11,8 @@ def index(request):
     form=UserForm()  
     return render(request, 'account/login.html',{'form':form})  
 
-def login(request):  
+def login(request):
+    form=UserForm()  
     if request.user.is_authenticated():  
         return  HttpResponse('You are logining!')  
     if request.method == 'POST':
@@ -29,15 +30,13 @@ def login(request):
 #                         return HttpResponseRedirect('/account/%d' % user.id)  
                         return HttpResponseRedirect(reverse('stationary:index'))
             else:  
-                    form=UserForm()
                     return render(request, 'account/login.html', {'error_message': "This username has not been registered!",'form':form,})
         else:  
-                form=UserForm()
                 return render(request, 'account/login.html', {'error_message': "The username or password is wrong!",'form':form})  
-    else:
-        form=UserForm()  
-        return render(request,'account/login.html',{'error_message': "Illegal login!",'form':form})
+    else:    
+        return render(request,'account/login.html',{'error_message': "Please login first!",'form':form})
 
 def logout(request):  
-    user_logout(request)  
-    return render(request,'account/login.html')  
+    user_logout(request)
+    form=UserForm()   
+    return render(request,'account/login.html',{'form':form,})  

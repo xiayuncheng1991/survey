@@ -11,8 +11,7 @@ urlpatterns = patterns('',
     # url(r'^$', 'survey.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
-    url(r'^$', views.index, name="index"),
-    url(r'^submit/$', views.submit, name="submit"),
+    url(r'^$', views.index, name="index"), 
     url(r'^result/$', views.result, name="result"),
     url(r'^json_stationarytype/$', views.get_stationarytype_json, name="json_stationarytype"),
 )
