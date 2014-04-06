@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Stationary{% endblock %}
+{% block content %}
+{% load static %}
+{% get_static_prefix as STATIC_PREFIX %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<section id="sec-form" class="row secform">
+		<div id="stationary" class="col-md-10 col-md-offset-1 stationary">
+			<form class="stationform" action="{% url 'stationary:submit' %}" method="post" >
+				{% csrf_token %}
+				<div id="carousel-station" class="carousel slide" date-ride="carousel">
+					<ol class="carousel-indicators"></ol>
+						<div class="carousel-inner"></div>
+							<a class="left carousel-control formabtn" href="#carousel-station" data-slide="prev">
+								<span class="glyphicon glyphicon-chevron-left"></span>
+							</a>
+							<a class="right carousel-control formabtn" href="#carousel-station" data-slide="next">
+								<span class="glyphicon glyphicon-chevron-right"></span>
+							</a>
+				</div>
+				<div class="row stationbtn">
+					<div class="col-md-2 col-md-offset-10">
+						<button type="submit" class="btn btn-success">提交</button>
+					</div>
+				</div>
+			</form>
+		</div>
+</section>
+			
+<script>
+$(document).ready(function(){
+    var url="http://192.168.235.1:8080/stationary/json_stationarytype/" 
+        $.getJSON(
+        url,  
+        function(data){
+                var length=data.length;
+                var stationary_name;
+                var stationary_image;
+                $.each(data,function(i,ite){
+                	if((i+1)%3==1)
+                		if(i==0){
+                			$(".carousel-inner").append("<div class='item active'><div class='row' id ='row"+Math.floor(i/3)+"'></div></div>");
+                			$("ol").append("<li data-target='#carousel-station' data-slide-to=='"+Math.floor(i/3)+"' class='active'>");
+                		}
+                		else{
+                			$(".carousel-inner").append("<div class='item'><div class='row' id ='row"+Math.floor(i/3)+"'></div></div>");
+                			$("ol").append("<li data-target='#carousel-station' data-slide-to=='"+Math.floor(i/3)+"'>");
+                		}
+                	$.each(ite, function (key,value) {
+            			if(key=="fields")
+            				$.each(value, function (_key,_value) {
+            					if(_key=="image")
+            						stationary_image=_value;
+            					if(_key=="name")
+            						stationary_name=_value;
+            				})
+            		})
+            			$("#row"+Math.floor(i/3)).append("<div class='col-md-4 text-center'><div class='dimg'><img src='{{STATIC_PREFIX}}img/"+stationary_image+"' class='imgshow' alt='Responsive image'></div><div class='numstation'><div class='i_box'><label for='"+stationary_name+"'>"+stationary_name+":</label><a href='javascript:;' class='J_minus'>-</a><input name='"+stationary_name+"' type='text' value='0' class='J_input' /><a href='javascript:;' class='J_add'>+</a></div></div></div>");
+                })  
+        }) 
+});
+</script>
+{% endblock %}
+

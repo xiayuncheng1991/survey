@@ -1,0 +1,22 @@
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form method="post" action="{% url 'account:login' %}">
+{% csrf_token %}
+<!-- {{form}} -->
+<label for="id_username">UserName:</label>
+{{form.username}}<br />
+<label for="id_password">Password:</label>
+{{form.password}}<br />
+<!-- <table>
+<tr>
+	<label for="1">用户名:</label>
+    <input type="text" name="username" id="1" value="" /><br />
+</tr>
+<tr>
+    <label for="2">密码 :</label>
+    <input type="password" name="password" id="2" value="" /><br />
+</tr>
+</table> -->
+ 
+<input type="submit" value="login" />
+</form>
