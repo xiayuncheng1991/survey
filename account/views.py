@@ -1,42 +1,49 @@
-from django.contrib.auth import authenticate,login as user_login, logout as user_logout 
+from django.contrib.auth import authenticate, login as user_login, logout as user_logout 
 from django.core.urlresolvers import reverse
 from django.http.response import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
-from account.models import UserForm
 
 
 # Create your views here.
 # coding=utf-8 
-def index(request):
-    form=UserForm()  
-    return render(request, 'account/login.html',{'form':form})  
-
-def login(request):
-    form=UserForm()  
+def login(request):  
     if request.user.is_authenticated():  
-        return  HttpResponse('You are logining!')  
+        return  HttpResponse('You are logining!') 
     if request.method == 'POST':
-        form = UserForm(request.POST) 
-        if form.is_valid():
-            username = form.cleaned_data["username"]
-            password = form.cleaned_data["password"]
-        else:
-            username = " "
-            password = " "
+        if 'error_login' in request.session:
+            del request.session['error_login']
+        username = request.POST['username']  
+        password = request.POST['password']
         user = authenticate(username=username, password=password)  
         if user is not None:  
             if user.is_active:  
-                        user_login(request, user)  
+                user_login(request, user)  
 #                         return HttpResponseRedirect('/account/%d' % user.id)  
-                        return HttpResponseRedirect(reverse('stationary:index'))
             else:  
-                    return render(request, 'account/login.html', {'error_message': "This username has not been registered!",'form':form,})
+                request.session['error_login'] = "This account is being used!"
         else:  
-                return render(request, 'account/login.html', {'error_message': "The username or password is wrong!",'form':form})  
-    else:    
-        return render(request,'account/login.html',{'error_message': "Please login first!",'form':form})
+            request.session['error_login'] = "The username or password is wrong!"
+    else:
+        request.session['error_login'] = "Please login first!"   
+    return HttpResponseRedirect(reverse(get_reverseurl_by_anonymity(request)))
 
-def logout(request):  
+def logout(request):
+    reverse_url=get_reverseurl_by_anonymity(request)
     user_logout(request)
-    form=UserForm()   
-    return render(request,'account/login.html',{'form':form,})  
+    return HttpResponseRedirect(reverse(reverse_url))
+
+def get_errorlogin_session(request):
+    if "error_login" in request.session:
+        return request.session['error_login']
+    else:
+        return None
+    
+def set_reverseurl_by_anonymity(request, reverse_url):
+    if "reverse_url" in request.session:
+        del request.session['reverse_url']
+    request.session['reverse_url'] = reverse_url
+    
+def get_reverseurl_by_anonymity(request):
+    if "reverse_url" in request.session:
+        return request.session['reverse_url']
+    else:
+        return "404.html"
