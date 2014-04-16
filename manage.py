@@ -2,7 +2,11 @@
 import os
 import sys
 
-if __name__ == "__main__22222":
+
+
+
+if __name__ == "__main__111":
+
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "survey.settings")
 
     from django.core.management import execute_from_command_line
