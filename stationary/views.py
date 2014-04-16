@@ -33,7 +33,7 @@ def submit(request):
             'error_message': "You did a illegal operation!",
            })
     else:
-        num_list = []
+        num_list = ["1"]
         pattern = re.compile(u"^[1-9]\d{1,2}$|^[0-9]$")
         for stationary in stationary_list:
             num = request.POST[stationary.name+str(stationary.id)]
